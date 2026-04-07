@@ -1,0 +1,21 @@
+# 1. Secrets & Config (CRITICAL)
+.env
+.venv/
+env/
+venv/
+ENV/
+
+# 2. Python Caches & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+
+# 3. OS specific files
+.DS_Store
+Thumbs.db
+
+# 4. Project Specific (Optional but helpful)
+*.log
+data.db
