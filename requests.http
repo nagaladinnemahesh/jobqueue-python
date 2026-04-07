@@ -1,0 +1,25 @@
+@baseUrl = http://localhost:8000
+
+GET http://localhost:8000/health
+Accept: application/json
+
+###
+
+POST http://localhost:8000/jobs
+Content-Type: application/json
+
+{
+  "type": "send_email",
+  "payload": {
+    "to": "test@gmail.com"
+  }
+}
+
+###
+
+GET http://localhost:8000/jobs
+Accept: application/json
+
+###
+GET http://localhost:8000/jobs/adb673ba-5560-4a68-961b-04d0691257d9
+Accept: application/json

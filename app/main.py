@@ -5,10 +5,12 @@ from app.core.config import settings
 from app.db.database import engine
 from app.db.base import Base
 from app.models.job import Job
+from app.routes.job import router as job_router
 
 app = FastAPI(title=settings.APP_NAME)
 
 app.include_router(health_router)
 app.include_router(info_router)
+app.include_router(job_router)
 
 Base.metadata.create_all(bind=engine)
