@@ -11,7 +11,7 @@ Content-Type: application/json
 {
   "type": "send_email",
   "payload": {
-    "to": "test@gmail.com"
+    "to": "test1@gmail.com"
   }
 }
 
@@ -21,5 +21,5 @@ GET http://localhost:8000/jobs
 Accept: application/json
 
 ###
-GET http://localhost:8000/jobs/adb673ba-5560-4a68-961b-04d0691257d9
+GET http://localhost:8000/jobs/528bf8bbba564ce7806579c2c9f41c22
 Accept: application/json

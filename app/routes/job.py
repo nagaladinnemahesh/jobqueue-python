@@ -2,6 +2,8 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.deps import get_db
 from app.models.job import Job
+from app.queue.queue import job_queue
+from app.workers.job_worker import process_job
 
 router = APIRouter()
 
@@ -12,11 +14,16 @@ router = APIRouter()
 def create_job(data: dict, db: Session = Depends(get_db)):
     job = Job(
         type = data.get("type"),
-        payload = data.get("payload")
+        payload = data.get("payload"),
+        status = "QUEUED"
     )
+
     db.add(job)
     db.commit()
     db.refresh(job)
+
+    #push to queue
+    job_queue.enqueue(process_job, job.id)
 
     return {
         "id":job.id,
