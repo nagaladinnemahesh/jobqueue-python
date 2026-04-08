@@ -10,15 +10,28 @@ logging.basicConfig(level=logging.INFO)
 def process_job(job_id: str):
     db = SessionLocal()
 
-    job = db.query(Job).filter(Job.id == job_id).first()
-
-    if not job:
-        logger.error(f"[JOB NOT FOUND]{job_id}")
-        return
-    
     try:
-        #mark processing
-        job.status = "PROCESSING"
+        # acquire lock
+        rows_updated = db.query(Job).filter(
+            Job.id == job_id,
+            Job.status == "QUEUED"
+        ).update({"status":"PROCESSING"})
+
+        if rows_updated == 0:
+            print(f"[SKIP] Job {job_id} already taken")
+            return
+        
+        db.commit() #commit lock
+
+        #fetch job
+
+        job = db.query(Job).filter(Job.id == job_id).first()
+
+        if not job:
+            logger.error(f"[JOB NOT FOUND]{job_id}")
+            return
+
+        # process
         job.attempts += 1
         db.commit()
 
@@ -37,11 +50,15 @@ def process_job(job_id: str):
         logger.info(f"[SUCCESS] Job {job.id}")
 
     except Exception as e:
-        logger.error(f"[FAILED] Job {job.id} | Attempt {job.attempts} | Error: {str(e)}")
+        logger.error(f"[FAILED] Job {job.id} | Error: {str(e)}")
+
+        job = db.query(Job).filter(Job.id == job_id).first()
+
+        if not job:
+            return
 
         if job.attempts >= job.max_attempts:
             job.status = "FAILED"
-            db.commit()
             logger.error(f"[FAILED] Job {job.id} | Attempt {job.attempts} | Error: {str(e)}")
         else:
             job.status = "QUEUED"

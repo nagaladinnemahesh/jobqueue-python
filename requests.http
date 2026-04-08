@@ -23,3 +23,8 @@ Accept: application/json
 ###
 GET http://localhost:8000/jobs/528bf8bbba564ce7806579c2c9f41c22
 Accept: application/json
+
+###
+
+GET http://localhost:8000/metrics
+Accept: application/json
