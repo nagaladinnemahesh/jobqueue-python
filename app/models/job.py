@@ -11,6 +11,7 @@ class Job(Base):
     payload = Column(JSON)
     status = Column(String, default="PENDING")
     attempts = Column(Integer, default=0)
+    max_attempts = Column(Integer, default = 3)
 
     created_at = Column(DateTime, default=datetime.utcnow)
     completed_at = Column(DateTime, nullable=True)

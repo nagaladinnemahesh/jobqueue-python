@@ -11,7 +11,7 @@ Content-Type: application/json
 {
   "type": "send_email",
   "payload": {
-    "to": "test1@gmail.com"
+    "to": "test7@gmail.com"
   }
 }
 
