@@ -3,6 +3,7 @@ from app.models.job import Job
 import time
 from datetime import timedelta
 import logging
+from app.services.email_service import send_email
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -38,10 +39,15 @@ def process_job(job_id: str):
         # print(f"Processing job {job_id}, attempt {job.attempts}")
         logger.info(f"[START] Job {job.id} | Attempt {job.attempts}")
 
+        #execution logic
+        if job.type == "send_email":
+            from app.services.email_service import send_email
+            send_email(job.payload)
+
         #stimulate work
-        import random
-        if random.random() < 0.5:
-            raise Exception("Random failure")
+        # import random
+        # if random.random() < 0.5:
+        #     raise Exception("Random failure")
         
         #success
         job.status = "COMPLETED"

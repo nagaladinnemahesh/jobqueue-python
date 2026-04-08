@@ -11,7 +11,9 @@ Content-Type: application/json
 {
   "type": "send_email",
   "payload": {
-    "to": "test7@gmail.com"
+    "to": "mahi0518n@gmail.com",
+    "subject": "Test from Queue",
+    "body": "This email is sent asynchronously 🚀"
   }
 }
 
@@ -28,3 +30,6 @@ Accept: application/json
 
 GET http://localhost:8000/metrics
 Accept: application/json
+
+###
+

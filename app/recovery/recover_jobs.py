@@ -12,7 +12,7 @@ def recover_stuck_jobs():
     try:
         threshold_time = datetime.utcnow() - timedelta(seconds=30)
 
-        jobs = db.query(job).filter(
+        jobs = db.query(Job).filter(
             Job.status == "QUEUED",
             Job.created_at < threshold_time,
             Job.attempts < Job.max_attempts
