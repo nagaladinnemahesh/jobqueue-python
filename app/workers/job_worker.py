@@ -56,6 +56,7 @@ def process_job(job_id: str):
         logger.info(f"[SUCCESS] Job {job.id}")
 
     except Exception as e:
+        db.rollback()
         logger.error(f"[FAILED] Job {job.id} | Error: {str(e)}")
 
         job = db.query(Job).filter(Job.id == job_id).first()
