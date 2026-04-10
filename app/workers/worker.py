@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+import os
+
 import logging
 import threading
 import time
@@ -5,6 +8,9 @@ from rq import Worker, Queue
 
 from app.queue.redis import redis_conn
 from app.recovery.recover_jobs import recover_stuck_jobs
+
+load_dotenv()
+print("WORKER DB URL:", os.getenv("DATABASE_URL"))
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

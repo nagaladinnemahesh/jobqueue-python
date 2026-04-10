@@ -1,3 +1,6 @@
+from dotenv import load_dotenv
+load_dotenv()
+
 from app.db.database import SessionLocal
 from app.models.job import Job
 import time
