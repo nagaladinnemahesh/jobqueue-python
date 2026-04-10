@@ -4,6 +4,7 @@ from app.db.deps import get_db
 from app.models.job import Job
 from app.queue.queue import job_queue
 from app.workers.job_worker import process_job
+from app.schemas.job import JobCreate
 
 router = APIRouter()
 
@@ -11,23 +12,23 @@ router = APIRouter()
 # create jobs
 
 @router.post("/jobs")
-def create_job(data: dict, db: Session = Depends(get_db)):
-    job = Job(
-        type = data.get("type"),
-        payload = data.get("payload"),
+def create_job(job_data: JobCreate, db: Session=Depends(get_db)):
+    new_job = Job(
+        type = job_data.type,
+        payload = job_data.payload,
         status = "QUEUED"
     )
 
-    db.add(job)
+    db.add(new_job)
     db.commit()
-    db.refresh(job)
+    db.refresh(new_job)
 
     #push to queue
-    job_queue.enqueue(process_job, job.id)
+    job_queue.enqueue(process_job, new_job.id)
 
     return {
-        "id":job.id,
-        "status": job.status
+        "id":new_job.id,
+        "status": new_job.status
     }
 
 

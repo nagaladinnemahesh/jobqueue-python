@@ -40,9 +40,14 @@ def process_job(job_id: str):
         logger.info(f"[START] Job {job.id} | Attempt {job.attempts}")
 
         #execution logic
-        if job.type == "send_email":
+
+        logger.info(f"[DEBUG] Job type: {job.type}")
+        job_type = job.type.lower().replace("-", "_")
+        if job_type == "send_email":
             from app.services.email_service import send_email
             send_email(job.payload)
+        else:
+            raise Exception(f"Unknow job type: {job_type}")
 
         #stimulate work
         # import random

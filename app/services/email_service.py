@@ -3,6 +3,7 @@ from email.mime.text import MIMEText
 from app.core.config import settings
 
 def send_email(payload: dict):
+    print("email function called")
     to_email = payload.get("to")
     subject = payload.get("subject", "No Subject")
     body = payload.get("body", "Empty email")
